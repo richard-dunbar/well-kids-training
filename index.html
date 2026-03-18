@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Well Kids Training Guide</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Georgia', serif; background: #FFFBF5; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const SECTIONS = [
+      {
+        id: "classroom",
+        emoji: "\u{1F9F0}",
+        title: "Classroom Management Tools",
+        subtitle: "Toddlers \u2192 Elementary \u00B7 Josh & Montana",
+        color: "#F97316",
+        bg: "#FFF7ED",
+        border: "#FDBA74",
+        content: [
+          {
+            heading: "\u{1F4E2} Call & Responses",
+            body: "A quick, easy way to get the whole classroom\u2019s attention \u2014 especially during transitions. Always wait for everyone to respond before moving on.",
+            tips: [
+              '\u201CIf you can hear my voice\u2026\u201D \u2192 kids finish the phrase',
+              "Clap pattern: clap clap clap-clap-clap",
+              '\u201CEveryone catch a bubble\u201D \u2192 kids go silent',
+            ],
+            note: "Wait for full participation (with a few exceptions). This signals safety and routine.",
+          },
+          {
+            heading: "\u{1F6B6} Transitions",
+            body: "Moving 3\u20135 year olds from one place to another is its own skill. Make it predictable and fun.",
+            tips: [
+              "Hold hands or use a rope",
+              'Sing to the tune of \u201CMary Had a Little Lamb\u201D: \u201CIt\'s time to stand in line, stand in line\u2026\u201D',
+              "Pretend to be an animal or a spy down the hallway",
+            ],
+          },
+          {
+            heading: "\u2B50 Positive Reinforcement",
+            body: "Name the behavior you WANT to see, not just what you don\u2019t want. This is your #1 tool.",
+            tips: [
+              '\u201CI see Becca sitting quietly ready for cheerios\u201D',
+              '\u201CWow, Nathan\'s eyes are forward and he is ready for the hallway\u201D',
+              "Give stickers for good behavior",
+              '\u201CI wonder who can be our hallway captain today?\u201D',
+            ],
+            note: "Naming a specific child doing the right thing motivates others to follow without singling anyone out negatively.",
+          },
+          {
+            heading: "\u{1F6BD} Bathroom (PreK 3\u20134s)",
+            body: "Create a clear system so you always know who is where.",
+            tips: [
+              "Kids who HAVE to go \u2192 stand on the wall closest to the bathroom",
+              "Kids who DON\u2019T have to go \u2192 stand on the opposite wall to play a game",
+              "Games to keep it calm: Simon Says, Icky Sticky Bubblegum",
+            ],
+          },
+        ],
+      },
+      {
+        id: "operations",
+        emoji: "\u{1F4CB}",
+        title: "Run The Classroom Like A Pro",
+        subtitle: "Toddlers \u2192 Elementary \u00B7 Sam Alvarez",
+        color: "#0EA5E9",
+        bg: "#F0F9FF",
+        border: "#7DD3FC",
+        content: [
+          {
+            heading: "\u{1F4FB} Walkies",
+            body: "Your lifeline. Never leave it in the classroom.",
+            tips: [
+              "Always on Channel 4 (Safety team = Channel 1)",
+              "First thing: check in with greeting team before class starts to confirm it works",
+              "Always walkie greeting team when transitioning so they know your location",
+              "Why location matters: parents pick up early, and safety requires it",
+            ],
+            note: "If you don\u2019t check in, you won\u2019t know if your walkie is broken until you need it most.",
+          },
+          {
+            heading: "\u{1F4CE} Clipboard",
+            body: "Take it everywhere. It helps you match names to faces and track early pickups.",
+            tips: [
+              "Always have name sheets + pen/sharpie",
+              "Write what each kid brought (backpack, toy, etc.) to keep track",
+              "No name sheets? Use any paper \u2014 coloring page works fine",
+              "Helps maintain correct ratio count if kids get checked out early",
+            ],
+          },
+          {
+            heading: "\u{1F5E3}\uFE0F Language That Works",
+            body: 'Use command language, not question language. \u201CCan you sit down?\u201D tells kids it\'s optional. \u201CI need you to sit down\u201D sets a clear expectation.',
+            tips: [
+              '\u2705 \u201CI need you to sit down\u201D',
+              '\u274C \u201CCan you sit down?\u201D',
+              'Follow with encouragement: \u201CThank you for listening so quickly!\u201D',
+              '\u201CGreat job sitting \u2014 now we can all hear the story.\u201D',
+            ],
+            note: "Positive framing after a command makes it feel supportive, not bossy.",
+          },
+          {
+            heading: "\u23F1\uFE0F Schedule & Time",
+            body: "The schedule lives on the inside of your cart door. It\u2019s a guide, not a law \u2014 but stick to it as much as possible.",
+            tips: [
+              "Keeping time \u2192 activities get done \u2192 Gospel gets delivered hands-on",
+              "Schedule is flexible: if modifications help, reach out to Andersen and Amiya",
+              "Delegate activities so things actually get done \u2014 if no one owns it, it won\u2019t happen",
+            ],
+          },
+        ],
+      },
+      {
+        id: "behavior",
+        emoji: "\u{1F49B}",
+        title: "Addressing Challenging Behavior",
+        subtitle: "All Ages \u00B7 Amiya Davis",
+        color: "#8B5CF6",
+        bg: "#FAF5FF",
+        border: "#C4B5FD",
+        content: [
+          {
+            heading: "\u{1F4A1} Core Belief",
+            body: "Behavior is a form of communication. When a child acts out, they are telling you something about their thoughts, emotions, or needs. By addressing it, you are teaching them emotional intelligence.",
+            tips: [],
+          },
+          {
+            heading: "\u{1F504} The Acting Out Cycle \u2014 7 Stages",
+            body: "Every escalation follows a predictable pattern. Knowing the stages helps you intervene early.",
+            tips: [],
+            cycle: [
+              {
+                stage: "1. Calm",
+                color: "#22C55E",
+                desc: "Compliant, cooperative, engaged. Responsive to praise.",
+                action: "This is the baseline. Reinforce it with positive attention.",
+              },
+              {
+                stage: "2. Trigger",
+                color: "#84CC16",
+                desc: "Something causes restlessness, frustration, or anxiety.",
+                action: "Identify what happened. Adjust the environment, redirect, or remove the trigger.",
+              },
+              {
+                stage: "3. Agitation",
+                color: "#EAB308",
+                desc: "Off-task behavior: darting eyes, finger tapping, disengaging, staring off.",
+                action: 'Show empathy: \u201CI see that you\'re feeling\u2026\u201D Try box breathing or balloon breathing together.',
+              },
+              {
+                stage: "4. Acceleration",
+                color: "#F97316",
+                desc: "Behavior intensifies, often directed at teacher or another child.",
+                action: "Stay neutral. Take your own deep breath. Model calm. Give space. Pray aloud if helpful. \u26A0\uFE0F If physical: radio Andersen and Amiya immediately.",
+              },
+              {
+                stage: "5. Peak",
+                color: "#EF4444",
+                desc: "Out of control: yelling, hitting, destroying property, eloping.",
+                action: "\u{1F6A8} RADIO Andersen and Amiya. Ensure everyone\u2019s safety first.",
+              },
+              {
+                stage: "6. De-escalation",
+                color: "#A855F7",
+                desc: "Less agitated but confused. May deny responsibility or try to blame others.",
+                action: "Give space. Offer an individual activity. Don\u2019t push for immediate conversation.",
+              },
+              {
+                stage: "7. Recovery",
+                color: "#6366F1",
+                desc: "Subdued. Returns toward calm. May avoid talking about what happened.",
+                action: "Debrief: what happened, was it acceptable, what\u2019s the plan next time. Speak identity over them. Reinforce positives AND hold age-appropriate accountability.",
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const QUIZ = [
+      {
+        q: "What walkie channel does your classroom use?",
+        options: ["Channel 1", "Channel 2", "Channel 3", "Channel 4"],
+        answer: 3,
+        explain: "Channel 4 is for classrooms. Channel 1 is reserved for the safety team.",
+      },
+      {
+        q: "What\u2019s the FIRST thing you should do when you get your walkie?",
+        options: [
+          "Attach it to your lanyard",
+          "Check in with the greeting team to confirm it works",
+          "Test it by calling another volunteer",
+          "Set it to silent mode",
+        ],
+        answer: 1,
+        explain: "If you don\u2019t check in before class, you won\u2019t know if your walkie is broken until you need it most.",
+      },
+      {
+        q: "Which is the correct way to give a direction to a PreK child?",
+        options: [
+          '\u201CCan you please sit down?\u201D',
+          '\u201CWould you like to sit with us?\u201D',
+          '\u201CI need you to sit down.\u201D',
+          '\u201CMaybe try sitting down?\u201D',
+        ],
+        answer: 2,
+        explain: '\u201CCan you\u2026\u201D signals the request is optional. \u201CI need you to\u2026\u201D sets a clear, non-optional expectation.',
+      },
+      {
+        q: "A child starts tapping their fingers, staring off into space, and stopping their activity. What stage of the Acting Out Cycle are they likely in?",
+        options: ["Trigger", "Agitation", "Acceleration", "De-escalation"],
+        answer: 1,
+        explain: "Agitation shows up as off-task behaviors: eye-darting, finger-tapping, disengaging. It comes before full acceleration.",
+      },
+      {
+        q: "A child becomes physical during a conflict in your class. What do you do?",
+        options: [
+          "Remove the child from the room yourself",
+          "Wait and observe to see if it de-escalates",
+          "Radio Andersen and Amiya immediately",
+          "Ask the other kids to give them space",
+        ],
+        answer: 2,
+        explain: "Any physical behavior = radio Andersen and Amiya immediately. This is non-negotiable.",
+      },
+      {
+        q: "Which of these is the best example of positive reinforcement by name?",
+        options: [
+          '\u201CEveryone needs to sit down right now.\u201D',
+          '\u201CI see Marcus sitting quietly \u2014 he\'s ready for the story!\u201D',
+          '\u201CStop running, everyone!\u201D',
+          '\u201CGood job, guys.\u201D',
+        ],
+        answer: 1,
+        explain: "Naming a specific child doing the RIGHT thing motivates others without shaming anyone. Vague praise is less effective.",
+      },
+      {
+        q: "After a peak behavior incident, a child has calmed down. This is the Recovery stage. What should you do?",
+        options: [
+          "Ignore what happened and move on",
+          "Immediately remove them from class",
+          "Debrief, reinforce positives, hold appropriate accountability, speak identity over them",
+          "Wait until next week to address it",
+        ],
+        answer: 2,
+        explain: "Recovery is a teaching moment: debrief what happened, make a plan, reinforce good identity, and \u2014 when appropriate \u2014 hold accountability with grace.",
+      },
+      {
+        q: "True or False: You should leave your walkie in the classroom when transitioning kids to the bathroom.",
+        options: ["True", "False"],
+        answer: 1,
+        explain: "Never leave your walkie behind. You need it with you at all times to reach the greeting team.",
+      },
+    ];
+
+    function WellKidsGuide() {
+      const [tab, setTab] = useState("guide");
+      const [openSection, setOpenSection] = useState(null);
+      const [openItem, setOpenItem] = useState(null);
+      const [quizStep, setQuizStep] = useState(0);
+      const [selected, setSelected] = useState(null);
+      const [confirmed, setConfirmed] = useState(false);
+      const [score, setScore] = useState(0);
+      const [done, setDone] = useState(false);
+      const [cycleOpen, setCycleOpen] = useState(null);
+
+      const handleAnswer = (i) => {
+        if (confirmed) return;
+        setSelected(i);
+      };
+
+      const handleConfirm = () => {
+        if (selected === null) return;
+        setConfirmed(true);
+        if (selected === QUIZ[quizStep].answer) setScore((s) => s + 1);
+      };
+
+      const handleNext = () => {
+        if (quizStep + 1 >= QUIZ.length) {
+          setDone(true);
+        } else {
+          setQuizStep((s) => s + 1);
+          setSelected(null);
+          setConfirmed(false);
+        }
+      };
+
+      const restartQuiz = () => {
+        setQuizStep(0);
+        setSelected(null);
+        setConfirmed(false);
+        setScore(0);
+        setDone(false);
+      };
+
+      const q = QUIZ[quizStep];
+      const pct = Math.round((score / QUIZ.length) * 100);
+
+      return (
+        <div style={{ fontFamily: "'Georgia', serif", background: "#FFFBF5", minHeight: "100vh", padding: "0 0 60px 0" }}>
+          {/* Header */}
+          <div style={{ background: "linear-gradient(135deg, #1E3A2F 0%, #2D5A3D 100%)", padding: "32px 24px 24px", textAlign: "center" }}>
+            <div style={{ fontSize: 13, letterSpacing: 3, color: "#86EFAC", textTransform: "uppercase", marginBottom: 8, fontFamily: "sans-serif" }}>
+              The Well &middot; Kids Ministry
+            </div>
+            <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 700, margin: "0 0 6px", lineHeight: 1.2 }}>
+              Volunteer Training Guide
+            </h1>
+            <p style={{ color: "#BBF7D0", fontSize: 14, margin: 0, fontFamily: "sans-serif" }}>
+              PreK (Ages 3&ndash;5) &middot; Classroom Ready
+            </p>
+
+            {/* Tabs */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 20 }}>
+              {["guide", "quiz"].map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTab(t)}
+                  style={{
+                    padding: "8px 24px",
+                    borderRadius: 999,
+                    border: "2px solid",
+                    borderColor: tab === t ? "#4ADE80" : "rgba(255,255,255,0.3)",
+                    background: tab === t ? "#4ADE80" : "transparent",
+                    color: tab === t ? "#1E3A2F" : "#fff",
+                    fontWeight: 700,
+                    fontSize: 14,
+                    cursor: "pointer",
+                    textTransform: "capitalize",
+                    fontFamily: "sans-serif",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {t === "guide" ? "\u{1F4D6} Study Guide" : "\u2705 Quiz"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ maxWidth: 680, margin: "0 auto", padding: "24px 16px" }}>
+            {tab === "guide" && (
+              <div>
+                <p style={{ color: "#6B7280", fontSize: 13, textAlign: "center", marginBottom: 24, fontFamily: "sans-serif" }}>
+                  Tap each section to expand. Work through all three tracks before taking the quiz.
+                </p>
+                {SECTIONS.map((sec, si) => (
+                  <div key={sec.id} style={{ marginBottom: 16, borderRadius: 16, overflow: "hidden", border: `2px solid ${sec.border}`, background: sec.bg }}>
+                    {/* Section Header */}
+                    <button
+                      onClick={() => setOpenSection(openSection === si ? null : si)}
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 14,
+                        padding: "18px 20px",
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        textAlign: "left",
+                      }}
+                    >
+                      <span style={{ fontSize: 28 }}>{sec.emoji}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 16, fontWeight: 700, color: "#1F2937" }}>{sec.title}</div>
+                        <div style={{ fontSize: 12, color: "#6B7280", fontFamily: "sans-serif", marginTop: 2 }}>{sec.subtitle}</div>
+                      </div>
+                      <span style={{ fontSize: 20, color: sec.color, transform: openSection === si ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
+                        &#9662;
+                      </span>
+                    </button>
+
+                    {openSection === si && (
+                      <div style={{ padding: "0 16px 16px" }}>
+                        {sec.content.map((item, ii) => {
+                          const key = `${si}-${ii}`;
+                          const isOpen = openItem === key;
+                          return (
+                            <div key={ii} style={{ marginBottom: 10, borderRadius: 12, background: "#fff", border: `1px solid ${sec.border}`, overflow: "hidden" }}>
+                              <button
+                                onClick={() => setOpenItem(isOpen ? null : key)}
+                                style={{
+                                  width: "100%",
+                                  padding: "14px 16px",
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                  background: "transparent",
+                                  border: "none",
+                                  cursor: "pointer",
+                                  textAlign: "left",
+                                }}
+                              >
+                                <span style={{ fontWeight: 700, fontSize: 15, color: "#1F2937" }}>{item.heading}</span>
+                                <span style={{ color: sec.color, fontSize: 16, transform: isOpen ? "rotate(180deg)" : "none", transition: "0.2s" }}>&#9662;</span>
+                              </button>
+                              {isOpen && (
+                                <div style={{ padding: "0 16px 16px" }}>
+                                  <p style={{ fontSize: 14, color: "#374151", lineHeight: 1.65, marginBottom: item.tips && item.tips.length ? 12 : 0, fontFamily: "sans-serif" }}>
+                                    {item.body}
+                                  </p>
+
+                                  {/* Cycle */}
+                                  {item.cycle && item.cycle.map((c, ci) => (
+                                    <div
+                                      key={ci}
+                                      style={{ marginBottom: 8, borderRadius: 10, border: `2px solid ${c.color}20`, overflow: "hidden" }}
+                                    >
+                                      <button
+                                        onClick={() => setCycleOpen(cycleOpen === ci ? null : ci)}
+                                        style={{
+                                          width: "100%",
+                                          padding: "10px 14px",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          gap: 10,
+                                          background: `${c.color}12`,
+                                          border: "none",
+                                          cursor: "pointer",
+                                          textAlign: "left",
+                                        }}
+                                      >
+                                        <span style={{ width: 10, height: 10, borderRadius: "50%", background: c.color, flexShrink: 0 }} />
+                                        <span style={{ fontWeight: 700, fontSize: 13, color: "#1F2937", flex: 1, fontFamily: "sans-serif" }}>{c.stage}</span>
+                                        <span style={{ fontSize: 12, color: c.color }}>&#9662;</span>
+                                      </button>
+                                      {cycleOpen === ci && (
+                                        <div style={{ padding: "10px 14px 12px", background: "#fff" }}>
+                                          <p style={{ fontSize: 13, color: "#4B5563", marginBottom: 8, fontFamily: "sans-serif" }}>{c.desc}</p>
+                                          <div style={{ background: `${c.color}10`, borderLeft: `3px solid ${c.color}`, padding: "8px 12px", borderRadius: "0 8px 8px 0" }}>
+                                            <p style={{ fontSize: 13, color: "#1F2937", margin: 0, fontFamily: "sans-serif" }}><strong>Your move:</strong> {c.action}</p>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))}
+
+                                  {item.tips && item.tips.length > 0 && (
+                                    <ul style={{ margin: "0 0 8px", padding: "0 0 0 4px", listStyle: "none" }}>
+                                      {item.tips.map((tip, ti) => (
+                                        <li key={ti} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 7, fontFamily: "sans-serif", fontSize: 13, color: "#374151" }}>
+                                          <span style={{ color: sec.color, flexShrink: 0, marginTop: 2 }}>&rarr;</span>
+                                          <span>{tip}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                  {item.note && (
+                                    <div style={{ background: `${sec.color}15`, borderLeft: `3px solid ${sec.color}`, padding: "8px 12px", borderRadius: "0 8px 8px 0", marginTop: 8 }}>
+                                      <p style={{ fontSize: 12, color: "#374151", margin: 0, fontFamily: "sans-serif" }}>{"\u{1F4A1}"} {item.note}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                <div style={{ textAlign: "center", marginTop: 28 }}>
+                  <button
+                    onClick={() => setTab("quiz")}
+                    style={{
+                      background: "linear-gradient(135deg, #1E3A2F, #2D5A3D)",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 999,
+                      padding: "14px 36px",
+                      fontSize: 15,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontFamily: "sans-serif",
+                      letterSpacing: 0.5,
+                    }}
+                  >
+                    Ready to Test Your Knowledge &rarr;
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {tab === "quiz" && !done && (
+              <div>
+                {/* Progress */}
+                <div style={{ marginBottom: 24 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "sans-serif", fontSize: 12, color: "#6B7280", marginBottom: 6 }}>
+                    <span>Question {quizStep + 1} of {QUIZ.length}</span>
+                    <span>{score} correct so far</span>
+                  </div>
+                  <div style={{ height: 6, background: "#E5E7EB", borderRadius: 999, overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${((quizStep + 1) / QUIZ.length) * 100}%`, background: "linear-gradient(90deg, #4ADE80, #22C55E)", borderRadius: 999, transition: "width 0.3s" }} />
+                  </div>
+                </div>
+
+                <div style={{ background: "#fff", borderRadius: 16, border: "2px solid #D1FAE5", padding: 24, marginBottom: 16 }}>
+                  <p style={{ fontSize: 16, fontWeight: 700, color: "#1F2937", lineHeight: 1.5, marginBottom: 20 }}>{q.q}</p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {q.options.map((opt, i) => {
+                      let bg = "#F9FAFB";
+                      let border = "#E5E7EB";
+                      let color = "#374151";
+                      if (selected === i && !confirmed) { bg = "#ECFDF5"; border = "#4ADE80"; color = "#1F2937"; }
+                      if (confirmed && i === q.answer) { bg = "#DCFCE7"; border = "#22C55E"; color = "#14532D"; }
+                      if (confirmed && selected === i && i !== q.answer) { bg = "#FEF2F2"; border = "#F87171"; color = "#7F1D1D"; }
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => handleAnswer(i)}
+                          style={{
+                            padding: "12px 16px",
+                            borderRadius: 10,
+                            border: `2px solid ${border}`,
+                            background: bg,
+                            color,
+                            fontSize: 14,
+                            textAlign: "left",
+                            cursor: confirmed ? "default" : "pointer",
+                            fontFamily: "sans-serif",
+                            fontWeight: selected === i ? 700 : 400,
+                            transition: "all 0.15s",
+                          }}
+                        >
+                          <span style={{ marginRight: 8 }}>
+                            {confirmed && i === q.answer ? "\u2705" : confirmed && selected === i ? "\u274C" : `${["A","B","C","D"][i]}.`}
+                          </span>
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {confirmed && (
+                  <div style={{ background: "#F0FDF4", border: "2px solid #86EFAC", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+                    <p style={{ fontWeight: 700, fontSize: 14, color: "#15803D", marginBottom: 4, fontFamily: "sans-serif" }}>
+                      {selected === q.answer ? "\u2705 Correct!" : "\u274C Not quite \u2014"}
+                    </p>
+                    <p style={{ fontSize: 13, color: "#374151", margin: 0, fontFamily: "sans-serif", lineHeight: 1.6 }}>{q.explain}</p>
+                  </div>
+                )}
+
+                <div style={{ display: "flex", gap: 10 }}>
+                  {!confirmed ? (
+                    <button
+                      onClick={handleConfirm}
+                      disabled={selected === null}
+                      style={{
+                        flex: 1,
+                        background: selected !== null ? "linear-gradient(135deg, #1E3A2F, #2D5A3D)" : "#E5E7EB",
+                        color: selected !== null ? "#fff" : "#9CA3AF",
+                        border: "none",
+                        borderRadius: 999,
+                        padding: "13px",
+                        fontSize: 15,
+                        fontWeight: 700,
+                        cursor: selected !== null ? "pointer" : "default",
+                        fontFamily: "sans-serif",
+                      }}
+                    >
+                      Check Answer
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleNext}
+                      style={{
+                        flex: 1,
+                        background: "linear-gradient(135deg, #1E3A2F, #2D5A3D)",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: 999,
+                        padding: "13px",
+                        fontSize: 15,
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        fontFamily: "sans-serif",
+                      }}
+                    >
+                      {quizStep + 1 >= QUIZ.length ? "See Results" : "Next Question \u2192"}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {tab === "quiz" && done && (
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: 56, marginBottom: 12 }}>
+                  {pct >= 80 ? "\u{1F3C6}" : pct >= 60 ? "\u{1F4AA}" : "\u{1F4DA}"}
+                </div>
+                <h2 style={{ fontSize: 24, color: "#1F2937", margin: "0 0 8px" }}>
+                  {pct >= 80 ? "You're classroom ready!" : pct >= 60 ? "Almost there!" : "Keep studying!"}
+                </h2>
+                <p style={{ fontFamily: "sans-serif", color: "#6B7280", marginBottom: 24 }}>
+                  You scored <strong>{score} out of {QUIZ.length}</strong> ({pct}%)
+                </p>
+
+                <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 32 }}>
+                  {[...Array(QUIZ.length)].map((_, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: "50%",
+                        background: i < score ? "#22C55E" : "#FCA5A5",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: 12,
+                        color: "#fff",
+                        fontWeight: 700,
+                        fontFamily: "sans-serif",
+                      }}
+                    >
+                      {i < score ? "\u2713" : "\u2717"}
+                    </div>
+                  ))}
+                </div>
+
+                {pct < 100 && (
+                  <p style={{ fontFamily: "sans-serif", fontSize: 13, color: "#6B7280", marginBottom: 20 }}>
+                    Go back to the guide and review, then try again.
+                  </p>
+                )}
+
+                <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+                  <button
+                    onClick={restartQuiz}
+                    style={{
+                      background: "linear-gradient(135deg, #1E3A2F, #2D5A3D)",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 999,
+                      padding: "12px 28px",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Retake Quiz
+                  </button>
+                  <button
+                    onClick={() => setTab("guide")}
+                    style={{
+                      background: "transparent",
+                      color: "#1E3A2F",
+                      border: "2px solid #1E3A2F",
+                      borderRadius: 999,
+                      padding: "12px 28px",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Back to Guide
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<WellKidsGuide />);
+  </script>
+</body>
+</html>
